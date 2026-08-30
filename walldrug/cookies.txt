@@ -1,0 +1,9 @@
+# HTTrack Website Copier Cookie File
+# This file format is compatible with Netscape cookies
+www.walldrug.com	TRUE	/	FALSE	1999999999	pfcmsismobile	0
+www.walldrug.com	TRUE	/	FALSE	1999999999	pfcmsistablet	0
+www.walldrug.com	TRUE	/	FALSE	1999999999	pfcmsviewfull	1
+www.walldrug.com	TRUE	/	FALSE	1999999999	PHPSESSID	ce751a3474b95f89a622546ea46b0a5d
+www.walldrug.com	TRUE	/	FALSE	1999999999	mf_has_cookie	1
+www.walldrug.com	TRUE	/	FALSE	1999999999	SameSite	None
+

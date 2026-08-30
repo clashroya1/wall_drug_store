@@ -1,0 +1,30 @@
+HTTrack3.49-25 launched on Sat, 29 Aug 2026 20:04:13 at https://www.walldrug.com/ +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(webhttrack -q -%i -w https://www.walldrug.com/ -O "/Users/eric/wall_drug_store/walldrug" -%P -N0 -s2 -p3 -D -a -K0 -c4 -%k -r3 -%e0 -A100000 -F "Mozilla/5.0 (compatible; HTTrack/3.x; +https://www.httrack.com/)" -%F "<!-- Mirrored from {url} by HTTrack Website Copier/3.x [XR&CO], {date} -->" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar -u1 -%s -%u -f2 -%I0 -%f )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+20:04:13	Warning: 	Cache: error trying to read the cache: bad zip file
+20:04:15	Warning: 	Moved Permanently for https://www.walldrug.com/robots.txt
+20:04:15	Warning: 	File has moved from https://www.walldrug.com/robots.txt to https://www.walldrug.com/robots.txt/
+20:06:21	Error: 	"Not Found" (404) at link https://www.walldrug.com/theme/walldrug/img/showcase-1.jpg/ (from https://www.walldrug.com/theme/walldrug/css/cached-bundle-head.css?ver=042926)
+20:06:21	Error: 	"Not Found" (404) at link https://www.walldrug.com/theme/walldrug/img/showcase-2.jpg/ (from https://www.walldrug.com/theme/walldrug/css/cached-bundle-head.css?ver=042926)
+20:06:21	Error: 	"Not Found" (404) at link https://www.walldrug.com/theme/walldrug/img/plus.png/ (from https://www.walldrug.com/theme/walldrug/css/cached-bundle-head.css?ver=042926)
+20:06:21	Error: 	"Not Found" (404) at link https://www.walldrug.com/theme/walldrug/img/pattern.png/ (from https://www.walldrug.com/theme/walldrug/css/cached-bundle-head.css?ver=042926)
+20:06:21	Error: 	"Not Found" (404) at link https://www.walldrug.com/theme/walldrug/img/showcase-4.jpg/ (from https://www.walldrug.com/theme/walldrug/css/cached-bundle-head.css?ver=042926)
+20:06:21	Error: 	"Not Found" (404) at link https://www.walldrug.com/theme/walldrug/img/grabbing.png/ (from https://www.walldrug.com/theme/walldrug/css/cached-bundle-head.css?ver=042926)
+20:06:21	Error: 	"Not Found" (404) at link https://www.walldrug.com/theme/walldrug/img/bg-4.jpg/ (from https://www.walldrug.com/theme/walldrug/css/cached-bundle-head.css?ver=042926)
+20:06:21	Error: 	"Not Found" (404) at link https://www.walldrug.com/theme/walldrug/img/showcase-3.jpg/ (from https://www.walldrug.com/theme/walldrug/css/cached-bundle-head.css?ver=042926)
+20:06:21	Error: 	"Not Found" (404) at link https://www.walldrug.com/theme/walldrug/img/shadow-bg.png/ (from https://www.walldrug.com/theme/walldrug/css/cached-bundle-head.css?ver=042926)
+20:06:21	Error: 	"Not Found" (404) at link https://www.walldrug.com/theme/walldrug/img/construction/constro-bg-2.jpg/ (from https://www.walldrug.com/theme/walldrug/css/cached-bundle-head.css?ver=042926)
+20:06:21	Error: 	"Not Found" (404) at link https://www.walldrug.com/theme/walldrug/css/grabbing.png/ (from https://www.walldrug.com/theme/walldrug/css/cached-bundle-head.css?ver=042926)
+20:06:21	Error: 	"Not Found" (404) at link https://www.walldrug.com/theme/walldrug/css/AjaxLoader.gif/ (from https://www.walldrug.com/theme/walldrug/css/cached-bundle-head.css?ver=042926)
+20:06:22	Error: 	"Not Found" (404) at link https://www.walldrug.com/assets/images/uploads/map/%7bz%7d/%7bx%7d/%7by%7d.jpg/ (from https://www.walldrug.com/theme/walldrug/scripts/cached-bundle-head.js?ver=042926)
+20:06:22	Warning: 	Link https://www.walldrug.com/machform/ not scanned (follow robots meta tag)
+20:06:22	Error: 	"Not Found" (404) at link https://www.walldrug.com/h/ (from https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js)
+20:06:22	Error: 	"Not Found" (404) at link https://www.walldrug.com/mustache.js/ (from https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js)
+
+HTTrack Website Copier/3.49-25 mirror complete in 2 minutes 9 seconds : 222 links scanned, 206 files written (56132172 bytes overall) [56148386 bytes received at 435258 bytes/sec], 406914 bytes transferred using HTTP compression in 2 files, ratio 18%, 6.7 requests per connection
+(15 errors, 4 warnings, 0 messages)
