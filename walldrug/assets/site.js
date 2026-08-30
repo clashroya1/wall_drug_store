@@ -12,10 +12,10 @@ menuButton?.addEventListener('click', () => {
 });
 
 menu?.addEventListener('click', (event) => {
-  if (event.target.closest('a')) closeMenu();
+  if (event.target.closest('a, button')) closeMenu();
 });
 
-document.querySelector('[data-hours-open]')?.addEventListener('click', () => hoursModal?.showModal());
+document.querySelectorAll('[data-hours-open]').forEach((button) => button.addEventListener('click', () => hoursModal?.showModal()));
 document.querySelector('[data-hours-close]')?.addEventListener('click', () => hoursModal?.close());
 hoursModal?.addEventListener('click', (event) => {
   if (event.target === hoursModal || event.target.closest('a')) hoursModal.close();
@@ -175,6 +175,41 @@ function setupReveals() {
   reveals.forEach((element) => observer.observe(element));
 }
 
+function startHeroVideo() {
+  const video = document.querySelector('[data-hero-video]');
+  if (!video) return;
+  video.muted = true;
+  video.defaultMuted = true;
+  video.loop = true;
+  video.playsInline = true;
+  const play = () => video.play().catch(() => {});
+  if (video.readyState >= 2) play();
+  else video.addEventListener('canplay', play, { once: true });
+}
+
+function setupHeroVideo() {
+  const cue = document.querySelector('[data-scroll-cue]');
+  startHeroVideo();
+  cue?.addEventListener('click', (event) => {
+    event.preventDefault();
+    document.querySelector('#intro')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
+
+window.addEventListener('pageshow', startHeroVideo);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') startHeroVideo();
+});
+
+const siteHeader = document.querySelector('[data-header]');
+function syncHeader() {
+  const route = window.location.hash.slice(1);
+  const home = !route || route === 'intro';
+  siteHeader?.classList.toggle('is-scrolled', !home || window.scrollY > 40);
+}
+window.addEventListener('scroll', syncHeader, { passive: true });
+window.addEventListener('hashchange', syncHeader);
+
 function setActiveNavigation(route) {
   const exploreRoutes = ['explore', 'dining', 'shopping', 'backyard', 'map'];
   const visitRoutes = ['visit', 'badlands', 'minuteman', 'city', 'bus-tours'];
@@ -188,15 +223,20 @@ function setActiveNavigation(route) {
 }
 
 function updateMetadata(page) {
-  document.title = page ? `${page.title.replace(/<[^>]*>/g, '')} — Wall Drug` : 'Wall Drug — Free Ice Water Since 1936';
-  document.querySelector('meta[name="description"]')?.setAttribute('content', page?.intro || "Discover Wall Drug, South Dakota's legendary roadside stop—home of free ice water since 1936.");
+  document.title = page ? `${page.title.replace(/<[^>]*>/g, '')} — Wall Drug` : "Welcome to Wall Drug — South Dakota's Legendary Roadside Stop";
+  document.querySelector('meta[name="description"]')?.setAttribute('content', page?.intro || "Welcome to Wall Drug, South Dakota's legendary roadside stop for families, food, Western history and unforgettable road-trip stories.");
 }
 
 async function handleRoute() {
   closeMenu();
   const route = decodeURIComponent(window.location.hash.slice(1));
   if (!route) {
-    main.innerHTML = homeMarkup; updateMetadata(null); setActiveNavigation(''); setupReveals(); return;
+    main.innerHTML = homeMarkup; updateMetadata(null); setActiveNavigation(''); setupReveals(); setupHeroVideo(); return;
+  }
+  if (route === 'intro') {
+    main.innerHTML = homeMarkup; updateMetadata(null); setActiveNavigation(''); setupReveals(); setupHeroVideo();
+    requestAnimationFrame(() => document.querySelector('#intro')?.scrollIntoView({ block: 'start' }));
+    return;
   }
   if (route.startsWith('article/')) {
     const article = articles.find((item) => item.slug === route.split('/')[1]);
@@ -217,4 +257,5 @@ async function handleRoute() {
 }
 
 window.addEventListener('hashchange', handleRoute);
+syncHeader();
 handleRoute();
