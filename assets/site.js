@@ -182,7 +182,13 @@ function startHeroVideo() {
   video.defaultMuted = true;
   video.loop = true;
   video.playsInline = true;
-  const play = () => video.play().catch(() => {});
+  video.setAttribute('muted', '');
+  video.setAttribute('playsinline', '');
+  video.setAttribute('webkit-playsinline', '');
+  const play = () => {
+    const attempt = video.play();
+    if (attempt && typeof attempt.catch === 'function') attempt.catch(() => {});
+  };
   if (video.readyState >= 2) play();
   else video.addEventListener('canplay', play, { once: true });
 }
@@ -190,6 +196,7 @@ function startHeroVideo() {
 function setupHeroVideo() {
   const cue = document.querySelector('[data-scroll-cue]');
   startHeroVideo();
+  document.addEventListener('touchstart', startHeroVideo, { once: true, passive: true });
   cue?.addEventListener('click', (event) => {
     event.preventDefault();
     document.querySelector('#intro')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -197,6 +204,7 @@ function setupHeroVideo() {
 }
 
 window.addEventListener('pageshow', startHeroVideo);
+document.addEventListener('WeixinJSBridgeReady', startHeroVideo);
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') startHeroVideo();
 });
