@@ -30,14 +30,15 @@ function routeHref(route) {
   return route.startsWith('http') ? route : `#${route}`;
 }
 
-function pageHero(page, article = false) {
-  return `<section class="page-hero ${article ? 'page-hero--article' : ''}">
+function pageHero(page, article = false, modifier = '') {
+  const heroImage = page.heroImage || page.image;
+  return `<section class="page-hero ${article ? 'page-hero--article' : ''} ${modifier}">
     <div class="page-hero__copy">
       <p class="eyebrow">${page.eyebrow}</p>
       <h1>${page.title}</h1>
       <p>${page.intro}</p>
     </div>
-    <figure class="page-hero__image"><img src="${page.image}" alt="" fetchpriority="high"><span aria-hidden="true">Wall · South Dakota</span></figure>
+    <figure class="page-hero__image"><img src="${heroImage}" alt="" fetchpriority="high"><span aria-hidden="true">Wall · South Dakota</span></figure>
   </section>`;
 }
 
@@ -120,14 +121,17 @@ async function renderArticle(article) {
 }
 
 function renderMap(page) {
-  main.innerHTML = `${pageHero(page)}<section class="map-page page-shell">
+  main.innerHTML = `${pageHero(page, false, 'page-hero--map')}<section class="map-page page-shell">
     <div class="map-intro"><div><p class="eyebrow">Inside Wall Drug</p><h2>Find your next stop.</h2></div><p>Drag to move around the map, use the controls to zoom, or reset to see everything. Keyboard users can focus the map and use the arrow keys plus + and −.</p></div>
     <div class="interactive-map" data-map tabindex="0" aria-label="Zoomable map of Wall Drug Store">
       <img src="${page.image}" alt="Map of Wall Drug Store shops and attractions" draggable="false" data-map-image>
       <div class="map-controls"><button type="button" data-zoom="in" aria-label="Zoom in">+</button><button type="button" data-zoom="out" aria-label="Zoom out">−</button><button type="button" data-zoom="reset" aria-label="Reset map">Reset</button></div>
       <p class="map-hint">Drag to explore</p>
     </div>
-    <div class="map-actions"><div><p class="eyebrow">Getting here</p><h2>510 Main Street<br>Wall, South Dakota</h2><p>Just off I-90 at exits 109 and 110.</p></div><a class="button" href="https://www.google.com/maps/dir/?api=1&destination=Wall+Drug+510+Main+Street+Wall+SD" target="_blank" rel="noreferrer">Open road directions ↗</a></div>
+    <section class="location-panel" aria-labelledby="location-title">
+      <div class="location-map"><iframe src="https://www.google.com/maps?q=Wall+Drug,+510+Main+Street,+Wall,+South+Dakota+57790&amp;output=embed" title="Wall Drug Store location on Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+      <div class="map-actions"><div><p class="eyebrow">You are headed here</p><h2 id="location-title">Wall Drug Store</h2><address>510 Main Street<br>Wall, South Dakota 57790</address><p>Right off I-90 at exits 109 and 110, eight miles north of Badlands National Park.</p></div><a class="button button-light" href="https://www.google.com/maps/dir/?api=1&amp;destination=Wall+Drug+510+Main+Street+Wall+SD" target="_blank" rel="noopener noreferrer">Open road directions ↗</a></div>
+    </section>
   </section>`;
   setupMap();
 }
