@@ -4,6 +4,12 @@ const menuButton = document.querySelector('[data-menu-toggle]');
 const menu = document.querySelector('[data-menu]');
 const hoursModal = document.querySelector('#hours-modal');
 const { pages, articles } = window.WALL_DRUG;
+let routeRevision = 0;
+const wallPaintingSets = [
+  ['cowboy-oxen.png', 'saloon-confrontation.png', 'mountain-valley.png'],
+  ['campfire-dusk.png', 'teepee-sunset.png', 'cattle-roping.png'],
+  ['mountain-valley.png', 'cowboy-oxen.png', 'teepee-sunset.png']
+];
 
 menuButton?.addEventListener('click', () => {
   const open = menuButton.getAttribute('aria-expanded') === 'true';
@@ -28,6 +34,13 @@ function closeMenu() {
 
 function routeHref(route) {
   return route.startsWith('http') ? route : `#${route}`;
+}
+
+function wallPaintingCluster(variant = 0) {
+  const paintings = wallPaintingSets[variant % wallPaintingSets.length];
+  return `<div class="wall-painting-cluster wall-painting-cluster--${variant % wallPaintingSets.length}" aria-hidden="true">
+    ${paintings.map((painting) => `<figure class="wall-painting"><img src="assets/decor/paintings/${painting}" alt="" loading="lazy"></figure>`).join('')}
+  </div>`;
 }
 
 function pageHero(page, article = false, modifier = '') {
@@ -79,7 +92,7 @@ function ctaMarkup(cta) {
 }
 
 function renderStandard(page) {
-  main.innerHTML = `${pageHero(page)}${statsMarkup(page.stats)}${sectionsMarkup(page.sections)}${page.quote ? `<blockquote class="story-quote reveal"><p>${page.quote}</p><span>THE INVITATION THAT STARTED IT ALL</span></blockquote>` : ''}${cardsMarkup(page.cards, 'Pick your own adventure.')}${galleryMarkup(page.gallery)}${relatedMarkup(page.related)}${ctaMarkup(page.cta)}`;
+  main.innerHTML = `${pageHero(page)}${statsMarkup(page.stats)}${sectionsMarkup(page.sections)}${wallPaintingCluster(1)}${page.quote ? `<blockquote class="story-quote reveal"><p>${page.quote}</p><span>THE INVITATION THAT STARTED IT ALL</span></blockquote>` : ''}${cardsMarkup(page.cards, 'Pick your own adventure.')}${galleryMarkup(page.gallery)}${relatedMarkup(page.related)}${ctaMarkup(page.cta)}`;
 }
 
 function renderJournal(page, year = 'all') {
@@ -88,13 +101,14 @@ function renderJournal(page, year = 'all') {
     <div class="article-grid">${articles.filter((article) => year === 'all' || article.year === year).map((article, index) => `<a href="#article/${article.slug}" class="article-card reveal ${index === 0 ? 'article-card--feature' : ''}">
       <div><img src="${article.image}" alt="" loading="lazy"></div><p>${article.date}</p><h2>${article.title}</h2><span>${article.excerpt}</span><b>Read the story →</b>
     </a>`).join('')}</div>
-  </section>`;
+  </section>${wallPaintingCluster(2)}`;
   document.querySelectorAll('[data-year]').forEach((button) => button.addEventListener('click', () => { renderJournal(page, button.dataset.year); setupReveals(); }));
 }
 
-async function renderArticle(article) {
+async function renderArticle(article, revision) {
   const page = { eyebrow: `${article.date} · Backyard Bulletin`, title: article.title, intro: article.excerpt, image: article.image };
-  main.innerHTML = `${pageHero(page, true)}<article class="article-body page-shell prose-frame prose-frame--article" id="article-content"><p class="loading-note">Dusting off this story…</p></article><section class="article-next page-shell"><a class="text-link" href="#journal">← Back to the journal</a></section>`;
+  main.innerHTML = `${pageHero(page, true)}<article class="article-body page-shell prose-frame prose-frame--article" id="article-content"><p class="loading-note">Dusting off this story…</p></article>${wallPaintingCluster(0)}<section class="article-next page-shell"><a class="text-link" href="#journal">← Back to the journal</a></section>`;
+  const articleContent = document.querySelector('#article-content');
   try {
     const response = await fetch(article.source);
     if (!response.ok) throw new Error('Article could not be loaded');
@@ -114,15 +128,18 @@ async function renderArticle(article) {
       if (!image.alt) image.alt = '';
     });
     original.querySelectorAll('[style]').forEach((element) => element.removeAttribute('style'));
-    document.querySelector('#article-content').innerHTML = original.innerHTML;
+    if (revision !== routeRevision || !articleContent?.isConnected) return;
+    articleContent.innerHTML = original.innerHTML;
   } catch (error) {
-    document.querySelector('#article-content').innerHTML = `<p>We couldn’t open this archived story in the preview. <a href="${article.source}">View the preserved original →</a></p>`;
+    if (revision !== routeRevision || !articleContent?.isConnected) return;
+    articleContent.innerHTML = `<p>We couldn’t open this archived story in the preview. <a href="${article.source}">View the preserved original →</a></p>`;
   }
 }
 
 function renderMap(page) {
   main.innerHTML = `${pageHero(page, false, 'page-hero--map')}<section class="map-page page-shell">
     <div class="map-intro"><div><p class="eyebrow">Inside Wall Drug</p><h2>Find your next stop.</h2></div><p>Drag to move around the map, use the controls to zoom, or reset to see everything. Keyboard users can focus the map and use the arrow keys plus + and −.</p></div>
+    ${wallPaintingCluster(2)}
     <div class="interactive-map" data-map tabindex="0" aria-label="Zoomable map of Wall Drug Store">
       <img src="${page.image}" alt="Map of Wall Drug Store shops and attractions" draggable="false" data-map-image>
       <div class="map-controls"><button type="button" data-zoom="in" aria-label="Zoom in">+</button><button type="button" data-zoom="out" aria-label="Zoom out">−</button><button type="button" data-zoom="reset" aria-label="Reset map">Reset</button></div>
@@ -140,11 +157,11 @@ function renderContact(page) {
   main.innerHTML = `${pageHero(page)}<section class="contact-layout page-shell">
     <div class="contact-details"><p class="eyebrow">Talk to a real person</p><h2>We’re here to help.</h2><dl><div><dt>Phone</dt><dd><a href="tel:+16052792175">605-279-2175</a></dd></div><div><dt>Email</dt><dd><a href="mailto:walldrug@gwtc.net">walldrug@gwtc.net</a></dd></div><div><dt>Address</dt><dd>510 Main St · PO Box 401<br>Wall, SD 57790-0401</dd></div><div><dt>Fax</dt><dd>605-279-2699</dd></div></dl></div>
     <div class="form-frame"><iframe src="www.walldrug.com/machform/embedf42b.html?id=11392" title="Contact Wall Drug form" loading="lazy"></iframe></div>
-  </section>`;
+  </section>${wallPaintingCluster(1)}`;
 }
 
 function renderApplication(page) {
-  main.innerHTML = `${pageHero(page)}<section class="application-intro page-shell"><p>Applicants are considered for employment without regard to race, color, religion, creed, sex, pregnancy, national origin, ancestry, age, disability, genetic information or any other basis prohibited by applicable law. Reasonable accommodations are available throughout the application process.</p></section><section class="application-frame page-shell"><iframe src="www.walldrug.com/machform/embed1cf7.html?id=12019" title="Wall Drug employment application"></iframe></section>`;
+  main.innerHTML = `${pageHero(page)}<section class="application-intro page-shell"><p>Applicants are considered for employment without regard to race, color, religion, creed, sex, pregnancy, national origin, ancestry, age, disability, genetic information or any other basis prohibited by applicable law. Reasonable accommodations are available throughout the application process.</p></section>${wallPaintingCluster(0)}<section class="application-frame page-shell"><iframe src="www.walldrug.com/machform/embed1cf7.html?id=12019" title="Wall Drug employment application"></iframe></section>`;
 }
 
 function setupMap() {
@@ -232,6 +249,7 @@ function updateMetadata(page) {
 }
 
 async function handleRoute() {
+  const revision = ++routeRevision;
   closeMenu();
   const route = decodeURIComponent(window.location.hash.slice(1));
   if (!route) {
@@ -244,7 +262,7 @@ async function handleRoute() {
   }
   if (route.startsWith('article/')) {
     const article = articles.find((item) => item.slug === route.split('/')[1]);
-    if (article) { updateMetadata(article); setActiveNavigation(route); await renderArticle(article); window.scrollTo(0, 0); return; }
+    if (article) { updateMetadata(article); setActiveNavigation(route); await renderArticle(article, revision); if (revision === routeRevision) { window.scrollTo(0, 0); setupReveals(); } return; }
   }
   const page = pages[route];
   if (!page) {
