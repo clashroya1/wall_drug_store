@@ -50,8 +50,8 @@ function statsMarkup(stats) {
 function sectionsMarkup(sections) {
   if (!sections?.length) return '';
   return `<div class="editorial-sections">${sections.map((section, index) => `<section class="editorial-row reveal ${index % 2 ? 'editorial-row--reverse' : ''}">
-    <figure><img src="${section.image}" alt="" loading="lazy"></figure>
-    <div><p class="eyebrow">${section.kicker}</p><h2>${section.title}</h2>${section.body.map((paragraph) => `<p>${paragraph}</p>`).join('')}</div>
+    <figure class="picture-frame"><img src="${section.image}" alt="" loading="lazy"></figure>
+    <div class="prose-frame"><p class="eyebrow">${section.kicker}</p><h2>${section.title}</h2>${section.body.map((paragraph) => `<p>${paragraph}</p>`).join('')}</div>
   </section>`).join('')}</div>`;
 }
 
@@ -94,7 +94,7 @@ function renderJournal(page, year = 'all') {
 
 async function renderArticle(article) {
   const page = { eyebrow: `${article.date} · Backyard Bulletin`, title: article.title, intro: article.excerpt, image: article.image };
-  main.innerHTML = `${pageHero(page, true)}<article class="article-body page-shell" id="article-content"><p class="loading-note">Dusting off this story…</p></article><section class="article-next page-shell"><a class="text-link" href="#journal">← Back to the journal</a></section>`;
+  main.innerHTML = `${pageHero(page, true)}<article class="article-body page-shell prose-frame prose-frame--article" id="article-content"><p class="loading-note">Dusting off this story…</p></article><section class="article-next page-shell"><a class="text-link" href="#journal">← Back to the journal</a></section>`;
   try {
     const response = await fetch(article.source);
     if (!response.ok) throw new Error('Article could not be loaded');

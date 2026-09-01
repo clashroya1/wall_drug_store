@@ -117,7 +117,7 @@ body{font-size:17px;line-height:1.72}
 /* Wall Drug interior: wood wall backdrop and leather content panels */
 :root{--wood-deep:#7b421d;--leather:#c39a67;--leather-light:#d2ae7a;--leather-dark:#765033;--leather-grain:radial-gradient(circle at 18% 24%,rgba(255,244,214,.22) 0 1px,transparent 1.8px),radial-gradient(circle at 76% 62%,rgba(73,41,22,.13) 0 1px,transparent 1.7px),linear-gradient(105deg,rgba(255,245,220,.08),transparent 36%,rgba(76,42,24,.08) 72%,transparent)}
 html{background:#7b421d}
-body{background-color:var(--wood-deep);background-image:linear-gradient(rgba(63,29,10,.04),rgba(57,25,8,.15)),url('textures/wall-drug-wood-panel-v2.jpg');background-position:center top;background-size:auto,1000px auto;background-repeat:repeat;background-attachment:fixed;color:var(--ink)}
+body{background-color:var(--wood-deep);background-image:linear-gradient(rgba(63,29,10,.04),rgba(57,25,8,.15)),url('textures/wall-drug-wood-panel-v2.jpg');background-position:center top;background-size:auto,1000px auto;background-repeat:repeat;background-attachment:scroll;color:var(--ink)}
 main{background:transparent}
 .story-section,.experience-section,.visit-banner,.editorial-sections,.related-stories,.map-page{background:transparent}
 .story-section:after{display:none}
@@ -197,3 +197,139 @@ main{background:transparent}
 .visit-details .button-light:hover,.visit-details .button-light:focus-visible{background:#566334;color:var(--paper)}
 @media (max-width:980px){.story-section .section-intro:before{display:none}.stained-glass-band:before,.stained-glass-band:after{display:none}.art-wall{grid-template-columns:1fr}.art-wall__copy{width:min(680px,92%);z-index:2;margin-bottom:-3rem}.art-wall__gallery{margin-left:3rem}.experience-section .section-heading{grid-template-columns:1fr;gap:2rem}.experience-section .section-heading>p{max-width:660px;justify-self:end}}
 @media (max-width:640px){.story-section .section-intro{width:100%;margin-top:0;padding:2.3rem 1.4rem;border-width:7px;transform:none}.story-section .story-grid{padding:0}.story-photo,.story-copy,.experience-card,.experience-card:nth-child(1),.experience-card:nth-child(2),.experience-card:nth-child(3),.art-wall__copy,.art-wall__gallery,.visit-banner>div:nth-child(2),.visit-details{transform:none}.story-copy{padding:2rem 1.4rem}.stained-glass-band{height:165px;padding:6px;margin-bottom:3rem}.experience-section .section-heading>div,.experience-section .section-heading>p{padding:2rem 1.4rem}.experience-grid{gap:1rem}.experience-card{border-width:7px}.art-wall{padding:4.5rem 1rem;gap:1.5rem}.art-wall__copy{width:100%;margin:0;padding:2rem 1.4rem}.art-wall__gallery{margin:0;padding:9px 9px 3rem}.art-wall__gallery img{aspect-ratio:1.05}.visit-banner>div:nth-child(2){padding:2rem 1.4rem;border-width:7px}}
+
+/* Long-form copy and photographs are mounted like the real gallery: quiet wood,
+   a narrow liner, matte artwork and shadows that sit against the wall. */
+body{
+  background-image:linear-gradient(90deg,rgba(39,16,5,.12),transparent 14%,transparent 86%,rgba(39,16,5,.14)),url('textures/wall-drug-wood-panel-v2.jpg');
+  background-size:auto,1000px auto;
+}
+.editorial-row{padding:clamp(1.5rem,3vw,3rem);background:none;border:0;box-shadow:none}
+.prose-frame,.picture-frame{
+  --frame-width:clamp(18px,1.8vw,27px);
+  --liner:#aa8c58;
+  --frame-material:
+    repeating-linear-gradient(92deg,rgba(255,255,255,.04) 0 1px,transparent 1px 14px),
+    conic-gradient(from 45deg at 50% 50%,#6c685e 0 25%,#aaa18e 0 50%,#777166 0 75%,#514e48 0);
+  position:relative;
+  isolation:isolate;
+  border:var(--frame-width) solid transparent;
+  border-radius:1px;
+  box-shadow:0 19px 34px rgba(29,12,4,.42),0 5px 8px rgba(29,12,4,.3),inset 0 0 0 1px rgba(255,255,255,.16);
+  transform:rotate(-.22deg);
+  transition:filter .2s ease;
+}
+.prose-frame{
+  min-width:0;
+  padding:clamp(2rem,4vw,4rem);
+  color:#f4f0e8;
+  background:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0 1px,transparent 1px 6px),
+    linear-gradient(118deg,#222a25,#18201c 58%,#252b26) padding-box,
+    var(--frame-material) border-box;
+  text-shadow:0 1px 1px rgba(0,0,0,.24);
+}
+.picture-frame{
+  padding:clamp(5px,.55vw,8px);
+  background:linear-gradient(#17130f,#31271e) padding-box,var(--frame-material) border-box;
+  box-shadow:0 19px 34px rgba(29,12,4,.42),0 5px 8px rgba(29,12,4,.3),inset 0 0 0 3px var(--liner),inset 0 0 0 4px rgba(31,22,13,.66);
+}
+.prose-frame:before{
+  content:"";
+  position:absolute;
+  z-index:2;
+  inset:0;
+  border:3px solid var(--liner);
+  box-shadow:inset 0 0 0 1px rgba(31,22,13,.72),0 0 0 1px rgba(255,244,216,.1);
+  pointer-events:none;
+}
+.prose-frame:after{display:none}
+.prose-frame>*{position:relative;z-index:1}
+.prose-frame:hover,.picture-frame:hover{filter:brightness(1.012)}
+.prose-frame h2,.prose-frame h3{color:#f8f5ef;text-shadow:none}
+.prose-frame .eyebrow,.prose-frame .chapter-number{color:#c9aa71}
+.prose-frame p:not(.eyebrow),.prose-frame li{color:#ece8e1}
+.prose-frame .text-link,.prose-frame a{color:#d8bd87}
+.prose-frame .text-link:hover,.prose-frame a:hover{color:#f0d7a4}
+.picture-frame:after{
+  content:"";
+  position:absolute;
+  z-index:2;
+  inset:calc(var(--frame-width) * -1 + 2px);
+  border:1px solid rgba(25,16,9,.46);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+  pointer-events:none;
+}
+.picture-frame img{position:relative;z-index:1;box-shadow:0 0 0 1px rgba(0,0,0,.62)}
+
+/* Fixed finishes: chalked ash, raw oak, restrained antique gold, grey wash, walnut. */
+.editorial-row:nth-child(5n+1) .prose-frame,
+.editorial-row:nth-child(5n+2) .picture-frame{
+  --liner:#a68d62;
+  --frame-material:repeating-linear-gradient(94deg,rgba(255,255,255,.055) 0 1px,transparent 1px 17px),conic-gradient(from 45deg,#68655d 0 25%,#a39b89 0 50%,#747067 0 75%,#514f4a 0);
+}
+.editorial-row:nth-child(5n+2) .prose-frame,
+.editorial-row:nth-child(5n+1) .picture-frame{
+  --liner:#b09057;
+  --frame-material:repeating-linear-gradient(90deg,rgba(64,37,17,.08) 0 2px,transparent 2px 18px),conic-gradient(from 45deg,#8d6842 0 25%,#c4a06a 0 50%,#9d774d 0 75%,#6f4e32 0);
+}
+.editorial-row:nth-child(5n+3) .prose-frame,
+.editorial-row:nth-child(5n+3) .picture-frame{
+  --liner:#806329;
+  --frame-material:linear-gradient(90deg,rgba(255,255,255,.04),transparent 45%,rgba(37,23,7,.08)),conic-gradient(from 45deg,#82682f 0 25%,#b59a55 0 50%,#92783a 0 75%,#665022 0);
+}
+.editorial-row:nth-child(5n+4) .prose-frame,
+.editorial-row:nth-child(5n+4) .picture-frame{
+  --liner:#948266;
+  --frame-material:repeating-linear-gradient(93deg,rgba(255,255,255,.035) 0 1px,transparent 1px 15px),conic-gradient(from 45deg,#535653 0 25%,#898a81 0 50%,#60625e 0 75%,#40423f 0);
+}
+.editorial-row:nth-child(5n+5) .prose-frame,
+.editorial-row:nth-child(5n+5) .picture-frame{
+  --liner:#957648;
+  --frame-material:repeating-linear-gradient(91deg,rgba(221,178,118,.035) 0 1px,rgba(35,16,8,.07) 2px 4px,transparent 5px 16px),conic-gradient(from 45deg,#4b2d1e 0 25%,#755039 0 50%,#573725 0 75%,#342016 0);
+}
+.editorial-row:nth-child(odd) .picture-frame{transform:rotate(.28deg)}
+.editorial-row:nth-child(even) .prose-frame{transform:rotate(.2deg)}
+.prose-frame--home{
+  --liner:#9a8158;
+  --frame-material:repeating-linear-gradient(93deg,rgba(255,255,255,.05) 0 1px,transparent 1px 16px),conic-gradient(from 45deg,#65635d 0 25%,#9c9587 0 50%,#706c64 0 75%,#4e4d49 0);
+  transform:rotate(.3deg);
+}
+.picture-frame--home{
+  --liner:#aa8a53;
+  --frame-material:repeating-linear-gradient(90deg,rgba(66,37,17,.08) 0 2px,transparent 2px 18px),conic-gradient(from 45deg,#86613d 0 25%,#bd9967 0 50%,#96704a 0 75%,#68472e 0);
+  transform:rotate(-.35deg);
+}
+.prose-frame--gallery,.picture-frame--gallery{
+  --frame-width:clamp(20px,2.1vw,31px);
+  --liner:#745a29;
+  --frame-material:linear-gradient(90deg,rgba(255,255,255,.035),transparent 48%,rgba(35,20,5,.08)),conic-gradient(from 45deg,#765d2b 0 25%,#aa8f4e 0 50%,#856b32 0 75%,#59451f 0);
+}
+.prose-frame--gallery{transform:rotate(-.35deg)}
+.picture-frame--gallery{transform:rotate(.3deg)}
+.prose-frame--article{
+  --frame-width:clamp(22px,2.4vw,34px);
+  --liner:#8f754c;
+  --frame-material:repeating-linear-gradient(91deg,rgba(214,173,116,.03) 0 1px,rgba(30,14,7,.06) 2px 4px,transparent 5px 18px),conic-gradient(from 45deg,#40291d 0 25%,#684936 0 50%,#4a3022 0 75%,#2e1d15 0);
+  margin-block:clamp(4rem,8vw,8rem);
+  transform:none;
+}
+/* The wood wall is continuous; structural sections must not draw seams across it. */
+.hero:not(.hero-welcome),.highway-marquee,.visit-banner,.page-hero,.fact-strip,.story-quote,.page-cta{
+  border-top:0;
+  border-bottom:0;
+}
+@media (max-width:980px){
+  .editorial-row{padding:1.5rem}
+  .prose-frame,.picture-frame,.editorial-row:nth-child(n) .prose-frame,.editorial-row:nth-child(n) .picture-frame{transform:none}
+}
+@media (max-width:640px){
+  .editorial-row{padding:1rem 0}
+  .prose-frame,.picture-frame{--frame-width:13px}
+  .prose-frame{padding:1.75rem 1.25rem}
+  .picture-frame{padding:4px}
+  .prose-frame--gallery,.picture-frame--gallery,.prose-frame--article{--frame-width:15px}
+  .prose-frame:before{border-width:2px}
+  .article-body.prose-frame{width:calc(100% - 1rem);padding:2rem 1.25rem}
+  .art-wall__copy.prose-frame{padding:2rem 1.25rem}
+}
